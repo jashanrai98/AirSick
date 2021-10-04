@@ -6,4 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".MapActivity">
 
+    <TextView
+        android:id="@+id/mapText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Map Page"
+        tools:layout_editor_absoluteX="166dp"
+        tools:layout_editor_absoluteY="276dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>
