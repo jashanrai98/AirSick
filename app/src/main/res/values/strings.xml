@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">AirSick</string>
+    <string name="watchlist_title">Cities You Are Watching</string>
+    <string name="rankings_title">AQI Rankings</string>
+    <string name="cities">Cities</string>
+    <string name="aqi">AQI</string>
 </resources>

@@ -4,6 +4,191 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RankingsActivity">
+    tools:context=".RankingsActivity"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/rankingsHeading"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:textSize="40sp"
+        android:text="@string/rankings_title"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:fillViewport="false"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rankingsHeading">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            >
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Vancouver"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="300dp"
+                    android:text="10.1"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Burnaby"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="300dp"
+                    android:text="11.1"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Coquitlam"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="300dp"
+                    android:text="12.1"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Vancouver"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="300dp"
+                    android:text="10.1"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:cardElevation="10dp"
+                app:cardCornerRadius="20dp"
+                app:cardBackgroundColor="@color/white"
+                app:cardMaxElevation="12dp"
+                app:cardPreventCornerOverlap="true"
+                app:cardUseCompatPadding="true"
+                >
+                <TextView
+                    android:layout_width="300dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="10dp"
+                    android:text="Burnaby"
+                    android:textSize="18sp"
+                    />
+
+                <TextView
+                    android:layout_width="50dp"
+                    android:layout_height="64dp"
+                    android:layout_marginStart="300dp"
+                    android:text="11.1"
+                    android:textSize="18sp" />
+
+            </androidx.cardview.widget.CardView>
+
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/the_bottom_navigation"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:layout_gravity="bottom"
+        android:text="BOTTOM NAV BAR HOLDER"
+        android:textColor="@color/white"
+        android:background="@color/black"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+    </TextView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
