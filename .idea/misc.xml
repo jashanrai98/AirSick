@@ -11,7 +11,11 @@
         <entry key="..\:/Users/Johnson/AndroidStudioProjects/AirSick/app/src/main/res/layout/activity_home.xml" value="0.3333333333333333" />
         <entry key="..\:/Users/Johnson/AndroidStudioProjects/AirSick/app/src/main/res/layout/activity_main.xml" value="0.12135416666666667" />
         <entry key="..\:/Users/Johnson/AndroidStudioProjects/AirSick/app/src/main/res/layout/activity_map.xml" value="0.12135416666666667" />
+<<<<<<< HEAD
+        <entry key="..\:/Users/Johnson/AndroidStudioProjects/AirSick/app/src/main/res/layout/activity_rankings.xml" value="0.11770833333333333" />
+=======
 >>>>>>> 49f0bbf4658bc3044e25a2c03a63ac441db63513
+>>>>>>> 1fd860caf1c3cb3891788e985a2205dab33ca709
       </map>
     </option>
   </component>
