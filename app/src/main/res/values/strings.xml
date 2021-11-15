@@ -4,4 +4,8 @@
     <string name="rankings_title">AQI Rankings</string>
     <string name="cities">Cities</string>
     <string name="aqi">AQI</string>
+    <string name="home_tab">Home</string>
+    <string name="map_tab">Map</string>
+    <string name="rankings_tab">Rankings</string>
+    <string name="watchlist_tab">Watchlist</string>
 </resources>

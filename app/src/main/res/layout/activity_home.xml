@@ -6,49 +6,6 @@
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <Button
-        android:id="@+id/buttonHome"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="3dp"
-        android:layout_weight="1"
-        android:text="Home"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonMap"
-        app:layout_constraintEnd_toStartOf="@+id/buttonMap"
-        app:layout_constraintHorizontal_chainStyle="packed"
-        app:layout_constraintStart_toStartOf="parent" />
-
-    <Button
-        android:id="@+id/buttonCities"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Your Cities"
-        app:layout_constraintBaseline_toBaselineOf="@+id/buttonRankings"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/buttonRankings" />
-
-    <Button
-        android:id="@+id/buttonMap"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
-        android:layout_weight="1"
-        android:text="Map"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/buttonRankings"
-        app:layout_constraintStart_toEndOf="@+id/buttonHome" />
-
-    <Button
-        android:id="@+id/buttonRankings"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Rankings"
-        app:layout_constraintEnd_toStartOf="@+id/buttonCities"
-        app:layout_constraintStart_toEndOf="@+id/buttonMap"
-        app:layout_constraintTop_toTopOf="@+id/buttonMap" />
-
     <TextView
         android:id="@+id/logoText"
         android:layout_width="wrap_content"
