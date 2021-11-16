@@ -8,4 +8,5 @@
     <string name="map_tab">Map</string>
     <string name="rankings_tab">Rankings</string>
     <string name="watchlist_tab">Watchlist</string>
+    <string name="sourceLink"><a>Source</a></string>
 </resources>
