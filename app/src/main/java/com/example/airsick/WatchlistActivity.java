@@ -31,20 +31,20 @@ public class WatchlistActivity extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
-        sp = this.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
-        loadWatchlist();
-        buildRecyclerView();
-        favListRV = this.getActivity().findViewById(R.id.favList);
-        return inflater.inflate(R.layout.activity_watchlist, container, false);
+        View view = inflater.inflate(R.layout.activity_watchlist, container, false);
+        sp = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
+        loadWatchlist(view);
+        favListRV = view.findViewById(R.id.favList);
+        buildRecyclerView(view);
+        return view;
     }
 
     public void saveCity(View view) {
-        sp = this.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
+        sp = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
         // method for saving the data in array list.
         // creating a variable for storing data in
         // shared preferences.
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
 
         // creating a variable for editor to
         // store data in shared preferences.
@@ -68,11 +68,11 @@ public class WatchlistActivity extends Fragment {
         //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
     }
 
-    public void loadWatchlist() {
+    public void loadWatchlist(View view) {
         // method to load arraylist from shared prefs
         // initializing our shared prefs with name as
         // shared preferences.
-        SharedPreferences sharedPreferences = getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
 
         // creating a variable for gson.
         Gson gson = new Gson();
@@ -96,12 +96,12 @@ public class WatchlistActivity extends Fragment {
         }
     }
 
-    private void buildRecyclerView() {
+    private void buildRecyclerView(View view) {
         // initializing our adapter class.
-        adapter = new WatchlistAdapter(watchlistModalArrayList, this.getContext());
+        adapter = new WatchlistAdapter(watchlistModalArrayList, view.getContext());
 
         // adding layout manager to our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(this.getContext());
+        LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
         favListRV.setHasFixedSize(true);
 
         // setting layout manager to our recycler view.

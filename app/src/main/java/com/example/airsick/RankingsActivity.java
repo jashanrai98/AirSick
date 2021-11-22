@@ -25,6 +25,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import javax.security.auth.callback.Callback;
 
@@ -46,14 +47,21 @@ public class RankingsActivity extends Fragment {
         recyclerView.setLayoutManager(lm);
         String[] cityList = CityList.getListOfCities();
         ArrayList<CityRankObject> cities = new ArrayList<>();
+        view.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
+        view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
         for (String cityName : cityList) {
             String cityURL = API_URL + cityName + API_TOKEN;
             queueParseJSON(new CallBack() {
                 @Override
                 public void onSuccess(CityRankObject currentCity) {
                     cities.add(currentCity);
+                    Collections.sort(cities);
                     recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
                     recyclerView.setAdapter(recyclerAdapter);
+                    if (cities.size() > 5 && view.findViewById(R.id.progressBar).getVisibility() == View.VISIBLE) {
+                        view.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
+                        view.findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
+                    }
                 }
 
                 @Override

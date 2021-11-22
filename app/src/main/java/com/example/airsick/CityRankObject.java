@@ -1,6 +1,6 @@
 package com.example.airsick;
 
-public class CityRankObject {
+public class CityRankObject implements Comparable<CityRankObject> {
 
     private String name;
     private int aqi;
@@ -24,5 +24,16 @@ public class CityRankObject {
     public CityRankObject(String name, int aqi) {
         this.name = name;
         this.aqi = aqi;
+    }
+
+    @Override
+    public int compareTo(CityRankObject cityRankObject) {
+        if (this.aqi > cityRankObject.aqi) {
+            return -1;
+        } else if (this.aqi == cityRankObject.aqi) {
+            return 0;
+        } else {
+            return 1;
+        }
     }
 }
