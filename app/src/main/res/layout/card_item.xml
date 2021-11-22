@@ -32,6 +32,13 @@
             android:layout_height="wrap_content"
             android:textColor="#FFFFFF" />
 
+        <Button
+            android:id="@+id/favButton"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:layout_marginLeft="350dp"
+            android:layout_marginTop="-30dp"/>
+
     </LinearLayout>
 
 
