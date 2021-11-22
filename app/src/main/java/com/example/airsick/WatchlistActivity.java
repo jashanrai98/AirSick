@@ -11,33 +11,92 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.SearchView;
 import android.widget.Toast;
+import android.widget.ListView;
+import android.widget.ToggleButton;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class WatchlistActivity extends Fragment {
+public class WatchlistActivity extends Fragment implements SearchView.OnQueryTextListener{
 
     SharedPreferences sp;
     String cityName;
     int cityAQI;
     CityRankObject item;
-    private WatchlistAdapter adapter;
+    WatchlistAdapter adapter;
     private ArrayList<CityRankObject> watchlistModalArrayList;
     private RecyclerView favListRV;
+    ArrayList<CityRankObject> arraylist = new ArrayList<CityRankObject>();
+    String[] cList;
+    ListView list;
+
+    SearchView editsearch;
+    private RequestQueue _requestQueue;
+    private static final String API_URL = "https://api.waqi.info/feed/";
+    private static final String API_TOKEN = "/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
+    RecyclerAdapter recyclerAdapter;
+    RecyclerView recyclerView;
+    RecyclerAdapter recyclerAdapter2;
+    RecyclerView recyclerView2;
+    protected View mView;
+    ToggleButton btn;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-
+        super.onCreateView(inflater, container, savedInstanceState);
+        View view = inflater.inflate(R.layout.activity_watchlist, container, false);
+        _requestQueue = Volley.newRequestQueue(this.requireContext());
+        this.mView = view;
         sp = this.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
-        loadWatchlist();
-        buildRecyclerView();
-        favListRV = this.getActivity().findViewById(R.id.favList);
-        return inflater.inflate(R.layout.activity_watchlist, container, false);
+
+        recyclerView = (RecyclerView) mView.findViewById(R.id.recycler_view_search);
+        recyclerView.setHasFixedSize(true);
+        LinearLayoutManager lm = new LinearLayoutManager(view.getContext());
+        recyclerView.setLayoutManager(lm);
+
+        recyclerView2 = (RecyclerView) mView.findViewById(R.id.favList2);
+
+        recyclerView2.setHasFixedSize(true);
+        LinearLayoutManager lm2 = new LinearLayoutManager(view.getContext());
+        recyclerView2.setLayoutManager(lm2);
+
+        //RecyclerView favListRV = this.requireActivity().findViewById(R.id.favList);
+        cList = CityList.getListOfCities();
+        ArrayList<CityRankObject> cities = new ArrayList<>();
+
+
+
+
+        // Locate the EditText in listview_main.xml
+
+
+        editsearch = (SearchView) view.findViewById(R.id.search_bar);
+        editsearch.setOnQueryTextListener(this);
+
+
+        return view;
     }
+
+
 
     public void saveCity(View view) {
         sp = this.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
@@ -54,7 +113,7 @@ public class WatchlistActivity extends Fragment {
         Gson gson = new Gson();
 
         // getting data from gson and storing it in a string.
-        String json = gson.toJson(watchlistModalArrayList);
+        String json = gson.toJson(arraylist);
 
         // below line is to save data in shared
         // prefs in the form of string.
@@ -110,4 +169,110 @@ public class WatchlistActivity extends Fragment {
         // setting adapter to our recycler view.
         favListRV.setAdapter(adapter);
     }
+
+    @Override
+    public boolean onQueryTextSubmit(String s) {
+        String cityURL = API_URL + s + API_TOKEN;
+        ArrayList<CityRankObject> cities = new ArrayList<>();
+        queueParseJSON(new WatchlistActivity.CallBack() {
+            @Override
+            public void onSuccess(CityRankObject currentCity) {
+
+                cities.add(currentCity);
+                //arraylist.add(currentCity);
+                recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
+                recyclerView.setAdapter(recyclerAdapter);
+                Button button = (Button) getActivity().findViewById(R.id.favButton);
+                button.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View v) {
+                        favClicked(currentCity);
+                    }
+                });
+
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+                System.out.println(errorMessage);
+            }
+        }, cityURL);
+
+
+        return false;
+    }
+
+    @Override
+    public boolean onQueryTextChange(String s) {
+        String text = s;
+        //adapter.filter(text);
+        return false;
+    }
+
+    private void queueParseJSON(final WatchlistActivity.CallBack onCallBack, String url) {
+
+
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+
+                    Gson gson = new Gson();
+
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        try {
+                            if (response.get("status").equals("ok")) {
+                                JSONObject data = response.getJSONObject("data");
+                                if (!data.get("aqi").toString().equals("-")) {
+                                    ApiInformation apiData = gson.fromJson(response.toString(), ApiInformation.class);
+                                    CityRankObject currentCity = new CityRankObject(apiData.getData().getCity().getCityName(), apiData.getData().getAqi());
+                                    onCallBack.onSuccess(currentCity);
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                            onCallBack.onFail("Unable to get city data");
+                        }
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        }
+        );
+        _requestQueue.add(request);
+    }
+
+    public interface CallBack {
+        void onSuccess(CityRankObject currentCity);
+        void onFail(String errorMessage);
+    }
+
+    public void findCity(String s){
+        String cityURL = API_URL + s + API_TOKEN;
+        ArrayList<CityRankObject> cities = new ArrayList<>();
+        queueParseJSON(new WatchlistActivity.CallBack() {
+            @Override
+            public void onSuccess(CityRankObject currentCity) {
+                cities.add(currentCity);
+                recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
+                recyclerView.setAdapter(recyclerAdapter);
+
+            }
+
+            @Override
+            public void onFail(String errorMessage) {
+                System.out.println(errorMessage);
+            }
+        }, cityURL);
+    }
+
+    public void favClicked(CityRankObject city){
+        arraylist.add(city);
+        recyclerAdapter2 = new RecyclerAdapter(getActivity(), arraylist);
+        recyclerView2.setAdapter(recyclerAdapter2);
+    }
+
+
 }

@@ -11,23 +11,33 @@
         android:id="@+id/watchlistHeading"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:textSize="40sp"
-        android:text="@string/watchlist_title"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        />
+        android:layout_gravity="center"
+        android:text="@string/watchlist_title"
+        android:textSize="40sp" />
+
+    <SearchView
+        android:id="@+id/search_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/watchlistHeading"
+        android:background="#d3d3d3"
+        android:iconifiedByDefault="false"
+        android:queryHint="@string/search_hint" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/recycler_view_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/watchlistHeading"
+        android:layout_below="@+id/search_bar"
         android:background="@android:color/darker_gray"
-        android:scrollbars="vertical"/>
+        android:scrollbars="vertical">
+
+    </androidx.recyclerview.widget.RecyclerView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favList"
+        android:id="@+id/favList2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@android:color/darker_gray"
