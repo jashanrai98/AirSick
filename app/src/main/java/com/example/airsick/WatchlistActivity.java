@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.ImageButton;
 import android.widget.SearchView;
 import android.widget.Toast;
 import android.widget.ListView;
@@ -180,13 +181,6 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
                 //arraylist.add(currentCity);
                 recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
                 recyclerView.setAdapter(recyclerAdapter);
-                Button button = (Button) getActivity().findViewById(R.id.favButton);
-                button.setOnClickListener(new View.OnClickListener() {
-                    public void onClick(View v) {
-                        favClicked(currentCity);
-                    }
-                });
-
             }
 
             @Override
@@ -264,12 +258,6 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
                 System.out.println(errorMessage);
             }
         }, cityURL);
-    }
-
-    public void favClicked(CityRankObject city){
-        arraylist.add(city);
-        recyclerAdapter2 = new RecyclerAdapter(getActivity(), arraylist);
-        recyclerView2.setAdapter(recyclerAdapter2);
     }
 
 
