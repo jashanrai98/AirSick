@@ -66,19 +66,32 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TextView cityNameDisplay = cardView.findViewById(R.id.cardCityName);
         TextView cityAQIDisplay = cardView.findViewById(R.id.cardCityAQI);
         cityNameDisplay.setText(String.valueOf(currentItem.getName()));
-        cityAQIDisplay.setText(String.valueOf(currentItem.getAqi()));
+        String aqiText = "Current AQI: " + currentItem.getAqi();
+        cityAQIDisplay.setText(aqiText);
         if (currentItem.getAqi() < 50) {
             cardView.setCardBackgroundColor(Color.rgb(0, 166, 110));
+            cityNameDisplay.setTextColor(Color.WHITE);
+            cityAQIDisplay.setTextColor(Color.WHITE);
         } else if (currentItem.getAqi() >= 50 && currentItem.getAqi() < 100) {
             cardView.setCardBackgroundColor(Color.rgb(79, 240, 10));
+            cityNameDisplay.setTextColor(Color.BLACK);
+            cityAQIDisplay.setTextColor(Color.BLACK);
         } else if (currentItem.getAqi() >= 100 && currentItem.getAqi() < 150) {
             cardView.setCardBackgroundColor(Color.rgb(240, 178, 10));
+            cityNameDisplay.setTextColor(Color.WHITE);
+            cityAQIDisplay.setTextColor(Color.WHITE);
         } else if (currentItem.getAqi() >= 150 && currentItem.getAqi() < 200) {
             cardView.setCardBackgroundColor(Color.rgb(242, 76, 70));
+            cityNameDisplay.setTextColor(Color.WHITE);
+            cityAQIDisplay.setTextColor(Color.WHITE);
         } else if (currentItem.getAqi() >= 200 && currentItem.getAqi() < 300) {
             cardView.setCardBackgroundColor(Color.rgb(219, 7, 187));
+            cityNameDisplay.setTextColor(Color.WHITE);
+            cityAQIDisplay.setTextColor(Color.WHITE);
         } else {
             cardView.setCardBackgroundColor(Color.rgb(112, 6, 66));
+            cityNameDisplay.setTextColor(Color.WHITE);
+            cityAQIDisplay.setTextColor(Color.WHITE);
         }
     }
 

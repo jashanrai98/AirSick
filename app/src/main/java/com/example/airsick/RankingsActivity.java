@@ -58,7 +58,7 @@ public class RankingsActivity extends Fragment {
                     Collections.sort(cities);
                     recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
                     recyclerView.setAdapter(recyclerAdapter);
-                    if (cities.size() > 5 && view.findViewById(R.id.progressBar).getVisibility() == View.VISIBLE) {
+                    if (cities.size() > 50 && view.findViewById(R.id.progressBar).getVisibility() == View.VISIBLE) {
                         view.findViewById(R.id.recycler_view).setVisibility(View.VISIBLE);
                         view.findViewById(R.id.progressBar).setVisibility(View.INVISIBLE);
                     }

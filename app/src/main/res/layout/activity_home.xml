@@ -1,92 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".HomeActivity">
 
-    <TextView
-        android:id="@+id/logoText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="45dp"
-        android:text="AirSick"
-        android:textSize="40dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/collectionText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="36dp"
-        android:layout_marginTop="240dp"
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-        android:text="Air Quality Collection Date"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+            <TextView
+                android:id="@+id/logoText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="45dp"
+                android:text="AirSick"
+                android:textSize="40dp"
+                android:gravity="center"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"/>
 
-    <TextView
-        android:id="@+id/ratingDisplayText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="72dp"
-        android:text=""
-        app:layout_constraintBaseline_toBaselineOf="@+id/ratingTagText"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/currentCityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="38dp"
+                android:text=""
+                android:textSize="30sp"
+                android:gravity="center"
+                android:layout_below="@+id/logoText"
+                android:layout_centerHorizontal="true"
+                />
 
-    <TextView
-        android:id="@+id/sourceText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="52dp"
-        android:layout_marginEnd="83dp"
-        android:text="AQI Source: "
-        app:layout_constraintBaseline_toBaselineOf="@+id/companySourceText"
-        app:layout_constraintEnd_toStartOf="@+id/companySourceText"
-        app:layout_constraintStart_toStartOf="parent" />
+            <TextView
+                android:id="@+id/collectionText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center"
+                android:text="Air Quality Collection Date"
+                android:textSize="15sp"
+                android:layout_below="@+id/currentCityText"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/companySourceText"
-        android:layout_width="106dp"
-        android:layout_height="21dp"
-        android:layout_marginTop="32dp"
-        android:layout_marginEnd="43dp"
-        android:text="@string/sourceLink"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/sourceText"
-        app:layout_constraintTop_toBottomOf="@+id/ratingDisplayText" />
+            <TextView
+                android:id="@+id/dateText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="45dp"
+                android:text="Test"
+                android:gravity="center"
+                android:layout_below="@+id/currentCityText"
+                android:layout_alignParentEnd="true"/>
 
-    <TextView
-        android:id="@+id/dateText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="12dp"
-        android:text=""
-        app:layout_constraintBaseline_toBaselineOf="@+id/collectionText"
-        app:layout_constraintEnd_toEndOf="parent" />
+            <TextView
+                android:id="@+id/ratingTagText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:text="Air Quality Rating"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_below="@+id/collectionText"
+                android:layout_alignParentStart="true" />
 
-    <TextView
-        android:id="@+id/ratingTagText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="44dp"
-        android:layout_marginEnd="28dp"
-        android:text="Air Quality Rating"
-        app:layout_constraintEnd_toEndOf="@+id/collectionText"
-        app:layout_constraintTop_toBottomOf="@+id/collectionText" />
+            <TextView
+                android:id="@+id/ratingDisplayText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginTop="45dp"
+                android:text=""
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/rounded_corner"
+                android:layout_below="@+id/dateText"
+                android:layout_alignParentEnd="true" />
 
-    <TextView
-        android:id="@+id/currentCityText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="38dp"
-        android:text=""
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/logoText" />
+            <TextView
+                android:id="@+id/sourceText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:text="AQI Source: "
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_below="@+id/ratingTagText"
+                android:layout_alignParentStart="true" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:id="@+id/companySourceText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginTop="45dp"
+                android:text="@string/sourceLink"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:layout_below="@+id/ratingDisplayText"
+                android:layout_alignParentEnd="true" />
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+
+</LinearLayout>

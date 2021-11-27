@@ -3,12 +3,16 @@ package com.example.airsick;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.fragment.app.Fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -53,11 +57,11 @@ public class HomeActivity extends Fragment {
         aqiText = (TextView) view.findViewById(R.id.ratingDisplayText);
         sourceText = (TextView) view.findViewById(R.id.companySourceText);
         _requestQueue = Volley.newRequestQueue(this.requireContext());
-        queueParseJSON(API_URL);
+        queueParseJSON(API_URL, view);
         return view;
     }
 
-    private void queueParseJSON(String url) {
+    private void queueParseJSON(String url, View view) {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
 
@@ -74,6 +78,26 @@ public class HomeActivity extends Fragment {
                         sourceText.setClickable(true);
                         sourceText.setText(Html.fromHtml(sourceString, Html.FROM_HTML_MODE_COMPACT));
                         sourceText.setTextColor(Color.BLUE);
+                        GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+                        if (apiData.getData().getAqi() < 50) {
+                            drawable.setColor(Color.rgb(0, 166, 110));
+                            aqiText.setTextColor(Color.WHITE);
+                        } else if (apiData.getData().getAqi() >= 50 && apiData.getData().getAqi() < 100) {
+                            drawable.setColor(Color.rgb(79, 240, 10));
+                            aqiText.setTextColor(Color.BLACK);
+                        } else if (apiData.getData().getAqi() >= 100 && apiData.getData().getAqi() < 150) {
+                            drawable.setColor(Color.rgb(240, 178, 10));
+                            aqiText.setTextColor(Color.WHITE);
+                        } else if (apiData.getData().getAqi() >= 150 && apiData.getData().getAqi() < 200) {
+                            drawable.setColor(Color.rgb(242, 76, 70));
+                            aqiText.setTextColor(Color.WHITE);
+                        } else if (apiData.getData().getAqi() >= 200 && apiData.getData().getAqi() < 300) {
+                            drawable.setColor(Color.rgb(219, 7, 187));
+                            aqiText.setTextColor(Color.WHITE);
+                        } else {
+                            drawable.setColor(Color.rgb(112, 6, 66));
+                            aqiText.setTextColor(Color.WHITE);
+                        }
                     }
                 },new Response.ErrorListener() {
 

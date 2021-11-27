@@ -66,6 +66,7 @@ public class WatchlistAdapter extends RecyclerView.Adapter<WatchlistAdapter.View
                 favButton.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        System.out.println("here");
                         Toast toast = Toast.makeText(v.getContext(), "clicked", Toast.LENGTH_LONG);
                         toast.show();
                     }
