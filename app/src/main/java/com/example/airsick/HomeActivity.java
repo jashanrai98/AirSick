@@ -59,6 +59,7 @@ public class HomeActivity extends Fragment {
     private TextView aqiText;
     private TextView sourceText;
     private TextView timeText;
+    private TextView severityMessage;
     private LineChart lineChart;
     private XAxis xAxis;
 
@@ -73,7 +74,20 @@ public class HomeActivity extends Fragment {
         timeText = (TextView) view.findViewById(R.id.dateText);
         aqiText = (TextView) view.findViewById(R.id.ratingDisplayText);
         sourceText = (TextView) view.findViewById(R.id.companySourceText);
+        severityMessage = (TextView) view.findViewById(R.id.ratingSeverityText);
         lineChart = (LineChart) view.findViewById(R.id.linechart);
+
+        aqiText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (severityMessage.getVisibility() == View.INVISIBLE) {
+                    severityMessage.setVisibility(View.VISIBLE);
+                } else {
+                    severityMessage.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         configureLineChart(lineChart);
         _requestQueue = Volley.newRequestQueue(this.requireContext());
         queueParseJSON(API_URL, view);
@@ -153,24 +167,42 @@ public class HomeActivity extends Fragment {
 
     private void setWidgetColour(Integer aqi) {
         GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+        String lowMessage = "Low";
+        String moderateMessage = "Moderate";
+        String sensitiveMessage = "Unhealthy For Sensitive Groups";
+        String unhealthyMessage = "Unhealthy";
+        String vUnhealthyMessage = "Very Unhealthy";
+        String hazMessage = "Hazardous";
         if (aqi < 50) {
             drawable.setColor(Color.rgb(0, 166, 110));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(lowMessage);
         } else if (aqi < 100) {
             drawable.setColor(Color.rgb(79, 240, 10));
             aqiText.setTextColor(Color.BLACK);
+
+            severityMessage.setText(moderateMessage);
         } else if (aqi < 150) {
             drawable.setColor(Color.rgb(240, 178, 10));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(sensitiveMessage);
         } else if (aqi < 200) {
             drawable.setColor(Color.rgb(242, 76, 70));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(unhealthyMessage);
         } else if (aqi < 300) {
             drawable.setColor(Color.rgb(219, 7, 187));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(vUnhealthyMessage);
         } else {
             drawable.setColor(Color.rgb(112, 6, 66));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(hazMessage);
         }
     }
 

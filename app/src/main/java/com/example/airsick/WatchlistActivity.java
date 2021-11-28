@@ -17,6 +17,7 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -69,6 +70,7 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
     private TextView sourceText;
     private TextView timeText;
     private LineChart lineChart;
+    private TextView severityMessage;
     private XAxis xAxis;
     protected View mView;
 
@@ -87,7 +89,20 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
         timeText = (TextView) view.findViewById(R.id.searchDateText);
         aqiText = (TextView) view.findViewById(R.id.searchRatingDisplayText);
         sourceText = (TextView) view.findViewById(R.id.searchCompanySourceText);
+        severityMessage = (TextView) view.findViewById(R.id.searchRatingSeverityText);
         lineChart = (LineChart) view.findViewById(R.id.searchLineChart);
+
+        aqiText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (severityMessage.getVisibility() == View.INVISIBLE) {
+                    severityMessage.setVisibility(View.VISIBLE);
+                } else {
+                    severityMessage.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
+
         configureLineChart(lineChart);
 
         return view;
@@ -149,7 +164,6 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
 
     @Override
     public boolean onQueryTextChange(String s) {
-        String text = s;
         return false;
     }
 
@@ -209,24 +223,42 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
 
     private void setWidgetColour(Integer aqi) {
         GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+        String lowMessage = "Low";
+        String moderateMessage = "Moderate";
+        String sensitiveMessage = "Unhealthy For Sensitive Groups";
+        String unhealthyMessage = "Unhealthy";
+        String vUnhealthyMessage = "Very Unhealthy";
+        String hazMessage = "Hazardous";
         if (aqi < 50) {
             drawable.setColor(Color.rgb(0, 166, 110));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(lowMessage);
         } else if (aqi < 100) {
             drawable.setColor(Color.rgb(79, 240, 10));
             aqiText.setTextColor(Color.BLACK);
+
+            severityMessage.setText(moderateMessage);
         } else if (aqi < 150) {
             drawable.setColor(Color.rgb(240, 178, 10));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(sensitiveMessage);
         } else if (aqi < 200) {
             drawable.setColor(Color.rgb(242, 76, 70));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(unhealthyMessage);
         } else if (aqi < 300) {
             drawable.setColor(Color.rgb(219, 7, 187));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(vUnhealthyMessage);
         } else {
             drawable.setColor(Color.rgb(112, 6, 66));
             aqiText.setTextColor(Color.WHITE);
+
+            severityMessage.setText(hazMessage);
         }
     }
 
