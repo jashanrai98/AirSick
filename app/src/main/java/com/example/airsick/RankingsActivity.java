@@ -26,6 +26,7 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import javax.security.auth.callback.Callback;
 
@@ -40,15 +41,20 @@ public class RankingsActivity extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_rankings, container, false);
+
         _requestQueue = Volley.newRequestQueue(this.requireContext());
         recyclerView = view.findViewById(R.id.recycler_view);
+
         recyclerView.setHasFixedSize(true);
         LinearLayoutManager lm = new LinearLayoutManager(view.getContext());
         recyclerView.setLayoutManager(lm);
+
         String[] cityList = CityList.getListOfCities();
         ArrayList<CityRankObject> cities = new ArrayList<>();
+
         view.findViewById(R.id.recycler_view).setVisibility(View.INVISIBLE);
         view.findViewById(R.id.progressBar).setVisibility(View.VISIBLE);
+
         for (String cityName : cityList) {
             String cityURL = API_URL + cityName + API_TOKEN;
             queueParseJSON(new CallBack() {

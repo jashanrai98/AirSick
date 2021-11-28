@@ -29,12 +29,26 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class HomeActivity extends Fragment {
@@ -45,6 +59,8 @@ public class HomeActivity extends Fragment {
     private TextView aqiText;
     private TextView sourceText;
     private TextView timeText;
+    private LineChart lineChart;
+    private XAxis xAxis;
 
     @Nullable
     @Override
@@ -52,10 +68,30 @@ public class HomeActivity extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_home, container, false);
+
         currentCity = (TextView) view.findViewById(R.id.currentCityText);
         timeText = (TextView) view.findViewById(R.id.dateText);
         aqiText = (TextView) view.findViewById(R.id.ratingDisplayText);
         sourceText = (TextView) view.findViewById(R.id.companySourceText);
+        lineChart = (LineChart) view.findViewById(R.id.linechart);
+        Description desc = new Description();
+        desc.setText(" ");
+        lineChart.setDescription(desc);
+        lineChart.getAxisRight().setEnabled(false);
+        xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter(new ValueFormatter() {
+            private final SimpleDateFormat format = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
+            @Override
+            public String getFormattedValue(float value) {
+                long millis = (long) value * 1000L;
+                return format.format(new Date(millis));
+            }
+        });
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getAxisLeft().setDrawGridLines(false);
+        xAxis.setTextSize(12);
+        lineChart.getAxisLeft().setTextSize(12);
         _requestQueue = Volley.newRequestQueue(this.requireContext());
         queueParseJSON(API_URL, view);
         return view;
@@ -98,6 +134,29 @@ public class HomeActivity extends Fragment {
                             drawable.setColor(Color.rgb(112, 6, 66));
                             aqiText.setTextColor(Color.WHITE);
                         }
+
+                        ZoneId zoneId = ZoneId.systemDefault();
+                        ArrayList<ParticleData> pm25List = apiData.getData().getForecast().getDaily().getPm25();
+                        List<Entry> entries = new ArrayList<Entry>();
+                        xAxis.setLabelCount(pm25List.size(), true);
+                        for (int i = 0; i < pm25List.size(); i++) {
+                            int average = pm25List.get(i).getAverage();
+                            String date = pm25List.get(i).getForecastDay();
+                            LocalDate newDate = LocalDate.parse(date);
+                            float floatDate = newDate.atStartOfDay(zoneId).toEpochSecond();
+                            entries.add(new Entry(floatDate, average));
+                        }
+                        LineDataSet forcastPoints = new LineDataSet(entries, "Particle 2.5 Data");
+                        forcastPoints.setDrawCircles(true);
+                        forcastPoints.setCircleRadius(4);
+                        forcastPoints.setDrawValues(false);
+                        forcastPoints.setLineWidth(3);
+                        forcastPoints.setColor(Color.GREEN);
+                        forcastPoints.setCircleColor(Color.GREEN);
+                        LineData lineData = new LineData(forcastPoints);
+                        lineChart.setData(lineData);
+                        lineChart.invalidate();
+
                     }
                 },new Response.ErrorListener() {
 

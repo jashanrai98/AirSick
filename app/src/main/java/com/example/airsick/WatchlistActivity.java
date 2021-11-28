@@ -2,10 +2,14 @@ package com.example.airsick;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -48,6 +52,7 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
     ArrayList<CityRankObject> arraylist = new ArrayList<CityRankObject>();
     String[] cList;
     ListView list;
+    ArrayList<CityRankObject> watchlistInfo;
 
     SearchView editsearch;
     private RequestQueue _requestQueue;
@@ -83,9 +88,6 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
         //RecyclerView favListRV = this.requireActivity().findViewById(R.id.favList);
         cList = CityList.getListOfCities();
         ArrayList<CityRankObject> cities = new ArrayList<>();
-
-
-
 
         // Locate the EditText in listview_main.xml
 

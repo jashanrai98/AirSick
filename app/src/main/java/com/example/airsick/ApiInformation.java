@@ -19,6 +19,7 @@ class ApiData {
     private Integer aqi;
     private TimeData time;
     private CityData city;
+    private ForecastData forecast;
 
     public TimeData getTime() {
         return time;
@@ -42,6 +43,14 @@ class ApiData {
 
     public void setAqi(Integer aqi) {
         this.aqi = aqi;
+    }
+
+    public ForecastData getForecast() {
+        return forecast;
+    }
+
+    public void setForecast(ForecastData forecast) {
+        this.forecast = forecast;
     }
 }
 

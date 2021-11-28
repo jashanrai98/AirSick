@@ -1,6 +1,8 @@
 package com.example.airsick;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -14,12 +16,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
 
@@ -39,8 +44,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         public ViewHolder(CardView v) {
             super(v);
             _cardView = v;
-            Button favButton = (Button) v.findViewById(R.id.favButton);
-            favButton.setOnClickListener(this);
         }
         @Override
         public void onClick(View v) {
@@ -93,12 +96,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             cityNameDisplay.setTextColor(Color.WHITE);
             cityAQIDisplay.setTextColor(Color.WHITE);
         }
+
+
+
+
     }
 
     @Override
     public int getItemCount() {
         return _cityList.size();
     }
-
 
 }

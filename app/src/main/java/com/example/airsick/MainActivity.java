@@ -4,9 +4,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.widget.LinearLayout;
 
@@ -17,6 +22,10 @@ import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.tabs.TabLayout;
 
 import org.json.JSONObject;
+
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -33,6 +42,11 @@ public class MainActivity extends AppCompatActivity {
         tabLayout.setupWithViewPager(pager);
 
     }
+
+
+
+
+
     public class SectionsPageAdapter extends FragmentPagerAdapter{
         public SectionsPageAdapter(FragmentManager fm) { super(fm); }
 
