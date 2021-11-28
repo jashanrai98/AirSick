@@ -74,10 +74,19 @@ public class HomeActivity extends Fragment {
         aqiText = (TextView) view.findViewById(R.id.ratingDisplayText);
         sourceText = (TextView) view.findViewById(R.id.companySourceText);
         lineChart = (LineChart) view.findViewById(R.id.linechart);
+        configureLineChart(lineChart);
+        _requestQueue = Volley.newRequestQueue(this.requireContext());
+        queueParseJSON(API_URL, view);
+        return view;
+    }
+
+    private void configureLineChart(LineChart lineChart) {
         Description desc = new Description();
         desc.setText(" ");
         lineChart.setDescription(desc);
+
         lineChart.getAxisRight().setEnabled(false);
+
         xAxis = lineChart.getXAxis();
         xAxis.setValueFormatter(new ValueFormatter() {
             private final SimpleDateFormat format = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
@@ -88,13 +97,12 @@ public class HomeActivity extends Fragment {
             }
         });
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+
         lineChart.getXAxis().setDrawGridLines(false);
         lineChart.getAxisLeft().setDrawGridLines(false);
+
         xAxis.setTextSize(12);
         lineChart.getAxisLeft().setTextSize(12);
-        _requestQueue = Volley.newRequestQueue(this.requireContext());
-        queueParseJSON(API_URL, view);
-        return view;
     }
 
     private void queueParseJSON(String url, View view) {
@@ -106,56 +114,16 @@ public class HomeActivity extends Fragment {
                     @Override
                     public void onResponse(JSONObject response) {
                         ApiInformation apiData = gson.fromJson(response.toString(), ApiInformation.class);
-                        currentCity.setText(apiData.getData().getCity().getCityName());
-                        timeText.setText(apiData.getData().getTime().getS());
-                        aqiText.setText(apiData.getData().getAqi().toString());
-                        String sourceString = "<a href=\"" + apiData.getData().getCity().getUrl() + "\">Link To Source</a>";
-                        sourceText.setMovementMethod(LinkMovementMethod.getInstance());
-                        sourceText.setClickable(true);
-                        sourceText.setText(Html.fromHtml(sourceString, Html.FROM_HTML_MODE_COMPACT));
-                        sourceText.setTextColor(Color.BLUE);
-                        GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
-                        if (apiData.getData().getAqi() < 50) {
-                            drawable.setColor(Color.rgb(0, 166, 110));
-                            aqiText.setTextColor(Color.WHITE);
-                        } else if (apiData.getData().getAqi() >= 50 && apiData.getData().getAqi() < 100) {
-                            drawable.setColor(Color.rgb(79, 240, 10));
-                            aqiText.setTextColor(Color.BLACK);
-                        } else if (apiData.getData().getAqi() >= 100 && apiData.getData().getAqi() < 150) {
-                            drawable.setColor(Color.rgb(240, 178, 10));
-                            aqiText.setTextColor(Color.WHITE);
-                        } else if (apiData.getData().getAqi() >= 150 && apiData.getData().getAqi() < 200) {
-                            drawable.setColor(Color.rgb(242, 76, 70));
-                            aqiText.setTextColor(Color.WHITE);
-                        } else if (apiData.getData().getAqi() >= 200 && apiData.getData().getAqi() < 300) {
-                            drawable.setColor(Color.rgb(219, 7, 187));
-                            aqiText.setTextColor(Color.WHITE);
-                        } else {
-                            drawable.setColor(Color.rgb(112, 6, 66));
-                            aqiText.setTextColor(Color.WHITE);
-                        }
 
-                        ZoneId zoneId = ZoneId.systemDefault();
-                        ArrayList<ParticleData> pm25List = apiData.getData().getForecast().getDaily().getPm25();
-                        List<Entry> entries = new ArrayList<Entry>();
-                        xAxis.setLabelCount(pm25List.size(), true);
-                        for (int i = 0; i < pm25List.size(); i++) {
-                            int average = pm25List.get(i).getAverage();
-                            String date = pm25List.get(i).getForecastDay();
-                            LocalDate newDate = LocalDate.parse(date);
-                            float floatDate = newDate.atStartOfDay(zoneId).toEpochSecond();
-                            entries.add(new Entry(floatDate, average));
-                        }
-                        LineDataSet forcastPoints = new LineDataSet(entries, "Particle 2.5 Data");
-                        forcastPoints.setDrawCircles(true);
-                        forcastPoints.setCircleRadius(4);
-                        forcastPoints.setDrawValues(false);
-                        forcastPoints.setLineWidth(3);
-                        forcastPoints.setColor(Color.GREEN);
-                        forcastPoints.setCircleColor(Color.GREEN);
-                        LineData lineData = new LineData(forcastPoints);
-                        lineChart.setData(lineData);
-                        lineChart.invalidate();
+                        setTextViewInfo(apiData.getData().getCity().getCityName(),
+                                apiData.getData().getTime().getS(),
+                                apiData.getData().getAqi().toString());
+
+                        configureSourceLine(apiData.getData().getCity().getUrl());
+
+                        setWidgetColour(apiData.getData().getAqi());
+
+                        setGraphData(apiData.getData().getForecast().getDaily().getPm25());
 
                     }
                 },new Response.ErrorListener() {
@@ -168,4 +136,66 @@ public class HomeActivity extends Fragment {
         );
         _requestQueue.add(request);
     }
+
+    private void setTextViewInfo(String city, String time, String aqi) {
+        currentCity.setText(city);
+        timeText.setText(time);
+        aqiText.setText(aqi);
+    }
+
+    private void configureSourceLine(String url) {
+        String sourceString = "<a href=\"" + url + "\">Link To Source</a>";
+        sourceText.setMovementMethod(LinkMovementMethod.getInstance());
+        sourceText.setClickable(true);
+        sourceText.setText(Html.fromHtml(sourceString, Html.FROM_HTML_MODE_COMPACT));
+        sourceText.setTextColor(Color.BLUE);
+    }
+
+    private void setWidgetColour(Integer aqi) {
+        GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+        if (aqi < 50) {
+            drawable.setColor(Color.rgb(0, 166, 110));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 100) {
+            drawable.setColor(Color.rgb(79, 240, 10));
+            aqiText.setTextColor(Color.BLACK);
+        } else if (aqi < 150) {
+            drawable.setColor(Color.rgb(240, 178, 10));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 200) {
+            drawable.setColor(Color.rgb(242, 76, 70));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 300) {
+            drawable.setColor(Color.rgb(219, 7, 187));
+            aqiText.setTextColor(Color.WHITE);
+        } else {
+            drawable.setColor(Color.rgb(112, 6, 66));
+            aqiText.setTextColor(Color.WHITE);
+        }
+    }
+
+    private void setGraphData(ArrayList<ParticleData> apiForcastList) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        ArrayList<ParticleData> pm25List = apiForcastList;
+        List<Entry> entries = new ArrayList<Entry>();
+        xAxis.setLabelCount(pm25List.size(), true);
+        for (int i = 0; i < pm25List.size(); i++) {
+            int average = pm25List.get(i).getAverage();
+            String date = pm25List.get(i).getForecastDay();
+            LocalDate newDate = LocalDate.parse(date);
+            float floatDate = newDate.atStartOfDay(zoneId).toEpochSecond();
+            entries.add(new Entry(floatDate, average));
+        }
+        LineDataSet forcastPoints = new LineDataSet(entries, "Particle 2.5 Data");
+        forcastPoints.setDrawCircles(true);
+        forcastPoints.setCircleRadius(4);
+        forcastPoints.setDrawValues(false);
+        forcastPoints.setLineWidth(3);
+        forcastPoints.setColor(Color.GREEN);
+        forcastPoints.setCircleColor(Color.GREEN);
+        LineData lineData = new LineData(forcastPoints);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
+    }
+
 }

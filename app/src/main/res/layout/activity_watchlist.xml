@@ -7,43 +7,130 @@
     tools:context=".RankingsActivity"
     android:orientation="vertical">
 
-    <TextView
-        android:id="@+id/watchlistHeading"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_gravity="center"
-        android:text="@string/watchlist_title"
-        android:textSize="40sp" />
-
     <SearchView
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/watchlistHeading"
+        android:layout_alignParentTop="true"
         android:background="#d3d3d3"
         android:iconifiedByDefault="false"
         android:queryHint="@string/search_hint" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_view_search"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/search_bar"
-        android:background="@android:color/darker_gray"
-        android:scrollbars="vertical">
-
-    </androidx.recyclerview.widget.RecyclerView>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/favList2"
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/darker_gray"
-        android:scrollbars="vertical"
-        android:layout_below="@+id/recycler_view_search"
-        />
+        android:layout_marginTop="60dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/searchedCityText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textSize="30sp"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                />
+
+            <TextView
+                android:id="@+id/searchCollectionText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:gravity="center"
+                android:text="Air Quality Collection Date"
+                android:textSize="20sp"
+                android:layout_below="@+id/searchedCityText"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/searchDateText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginEnd="45dp"
+                android:text="Test"
+                android:textSize="20sp"
+                android:gravity="center"
+                android:layout_below="@+id/searchedCityText"
+                android:layout_alignParentEnd="true"/>
+
+            <TextView
+                android:id="@+id/searchRatingTagText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:text="Air Quality Rating"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_below="@+id/searchCollectionText"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/searchRatingDisplayText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginTop="45dp"
+                android:text=""
+                android:textSize="20sp"
+                android:gravity="center"
+                android:background="@drawable/rounded_corner"
+                android:layout_below="@+id/searchDateText"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/searchSourceText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_marginStart="45dp"
+                android:text="AQI Source: "
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_below="@+id/searchRatingTagText"
+                android:layout_alignParentStart="true" />
+
+            <TextView
+                android:id="@+id/searchCompanySourceText"
+                android:layout_width="120dp"
+                android:layout_height="50dp"
+                android:layout_marginEnd="45dp"
+                android:layout_marginTop="45dp"
+                android:text="@string/searchSourceLink"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_below="@+id/searchRatingDisplayText"
+                android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:id="@+id/searchGraphTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="50dp"
+                android:layout_marginTop="45dp"
+                android:layout_centerHorizontal="true"
+                android:text="Weekly View of PM2.5 Data"
+                android:gravity="center"
+                android:textSize="20sp"
+                android:layout_below="@+id/searchCompanySourceText"
+                />
+
+            <com.github.mikephil.charting.charts.LineChart
+                android:id="@+id/searchLineChart"
+                android:layout_width="350dp"
+                android:layout_height="350dp"
+                android:layout_marginTop="25dp"
+                android:layout_below="@+id/searchGraphTitle"
+                android:layout_centerHorizontal="true"/>
+
+        </RelativeLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

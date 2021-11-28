@@ -11,7 +11,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +24,7 @@ import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
 import android.widget.SearchView;
+import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ListView;
 import android.widget.ToggleButton;
@@ -30,6 +35,13 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -37,33 +49,28 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.lang.reflect.Type;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 
 public class WatchlistActivity extends Fragment implements SearchView.OnQueryTextListener{
-
-    SharedPreferences sp;
-    String cityName;
-    int cityAQI;
-    CityRankObject item;
-    WatchlistAdapter adapter;
-    private ArrayList<CityRankObject> watchlistModalArrayList;
-    private RecyclerView favListRV;
-    ArrayList<CityRankObject> arraylist = new ArrayList<CityRankObject>();
-    String[] cList;
-    ListView list;
-    ArrayList<CityRankObject> watchlistInfo;
 
     SearchView editsearch;
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/";
     private static final String API_TOKEN = "/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
-    RecyclerAdapter recyclerAdapter;
-    RecyclerView recyclerView;
-    RecyclerAdapter recyclerAdapter2;
-    RecyclerView recyclerView2;
+    private TextView currentCity;
+    private TextView aqiText;
+    private TextView sourceText;
+    private TextView timeText;
+    private LineChart lineChart;
+    private XAxis xAxis;
     protected View mView;
-    ToggleButton btn;
 
 
     @Override
@@ -72,117 +79,62 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
         View view = inflater.inflate(R.layout.activity_watchlist, container, false);
         _requestQueue = Volley.newRequestQueue(this.requireContext());
         this.mView = view;
-        sp = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
-
-        recyclerView = (RecyclerView) mView.findViewById(R.id.recycler_view_search);
-        recyclerView.setHasFixedSize(true);
-        LinearLayoutManager lm = new LinearLayoutManager(view.getContext());
-        recyclerView.setLayoutManager(lm);
-
-        recyclerView2 = (RecyclerView) mView.findViewById(R.id.favList2);
-
-        recyclerView2.setHasFixedSize(true);
-        LinearLayoutManager lm2 = new LinearLayoutManager(view.getContext());
-        recyclerView2.setLayoutManager(lm2);
-
-        //RecyclerView favListRV = this.requireActivity().findViewById(R.id.favList);
-        cList = CityList.getListOfCities();
-        ArrayList<CityRankObject> cities = new ArrayList<>();
-
-        // Locate the EditText in listview_main.xml
-
 
         editsearch = (SearchView) view.findViewById(R.id.search_bar);
         editsearch.setOnQueryTextListener(this);
+
+        currentCity = (TextView) view.findViewById(R.id.searchedCityText);
+        timeText = (TextView) view.findViewById(R.id.searchDateText);
+        aqiText = (TextView) view.findViewById(R.id.searchRatingDisplayText);
+        sourceText = (TextView) view.findViewById(R.id.searchCompanySourceText);
+        lineChart = (LineChart) view.findViewById(R.id.searchLineChart);
+        configureLineChart(lineChart);
+
         return view;
     }
 
+    private void configureLineChart(LineChart lineChart) {
+        Description desc = new Description();
+        desc.setText(" ");
+        lineChart.setDescription(desc);
 
+        lineChart.getAxisRight().setEnabled(false);
 
-    public void saveCity(View view) {
-        sp = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
-        // method for saving the data in array list.
-        // creating a variable for storing data in
-        // shared preferences.
-        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
+        xAxis = lineChart.getXAxis();
+        xAxis.setValueFormatter(new ValueFormatter() {
+            private final SimpleDateFormat format = new SimpleDateFormat("dd MMM", Locale.ENGLISH);
+            @Override
+            public String getFormattedValue(float value) {
+                long millis = (long) value * 1000L;
+                return format.format(new Date(millis));
+            }
+        });
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
 
-        // creating a variable for editor to
-        // store data in shared preferences.
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        lineChart.getXAxis().setDrawGridLines(false);
+        lineChart.getAxisLeft().setDrawGridLines(false);
 
-        // creating a new variable for gson.
-        Gson gson = new Gson();
-
-        // getting data from gson and storing it in a string.
-        String json = gson.toJson(arraylist);
-
-        // below line is to save data in shared
-        // prefs in the form of string.
-        editor.putString("fav", json);
-
-        // below line is to apply changes
-        // and save data in shared prefs.
-        editor.apply();
-
-        // after saving data we are displaying a toast message.
-        //Toast.makeText(this, "Saved Array List to Shared preferences. ", Toast.LENGTH_SHORT).show();
-    }
-
-    public void loadWatchlist(View view) {
-        // method to load arraylist from shared prefs
-        // initializing our shared prefs with name as
-        // shared preferences.
-        SharedPreferences sharedPreferences = view.getContext().getSharedPreferences("savedWatchlist", Context.MODE_PRIVATE);
-
-        // creating a variable for gson.
-        Gson gson = new Gson();
-
-        // below line is to get to string present from our
-        // shared prefs if not present setting it as null.
-        String json = sharedPreferences.getString("fav", null);
-
-        // below line is to get the type of our array list.
-        Type type = new TypeToken<ArrayList<CityRankObject>>() {}.getType();
-
-        // in below line we are getting data from gson
-        // and saving it to our array list
-        watchlistModalArrayList = gson.fromJson(json, type);
-
-        // checking below if the array list is empty or not
-        if (watchlistModalArrayList == null) {
-            // if the array list is empty
-            // creating a new array list.
-            watchlistModalArrayList = new ArrayList<>();
-        }
-    }
-
-    private void buildRecyclerView(View view) {
-        // initializing our adapter class.
-        adapter = new WatchlistAdapter(watchlistModalArrayList, view.getContext());
-
-        // adding layout manager to our recycler view.
-        LinearLayoutManager manager = new LinearLayoutManager(view.getContext());
-        favListRV.setHasFixedSize(true);
-
-        // setting layout manager to our recycler view.
-        favListRV.setLayoutManager(manager);
-
-        // setting adapter to our recycler view.
-        favListRV.setAdapter(adapter);
+        xAxis.setTextSize(12);
+        lineChart.getAxisLeft().setTextSize(12);
     }
 
     @Override
     public boolean onQueryTextSubmit(String s) {
         String cityURL = API_URL + s + API_TOKEN;
-        ArrayList<CityRankObject> cities = new ArrayList<>();
+
         queueParseJSON(new WatchlistActivity.CallBack() {
             @Override
-            public void onSuccess(CityRankObject currentCity) {
+            public void onSuccess(ApiInformation apiData) {
+                setTextViewInfo(apiData.getData().getCity().getCityName(),
+                        apiData.getData().getTime().getS(),
+                        apiData.getData().getAqi().toString());
 
-                cities.add(currentCity);
-                //arraylist.add(currentCity);
-                recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
-                recyclerView.setAdapter(recyclerAdapter);
+                configureSourceLine(apiData.getData().getCity().getUrl());
+
+                setWidgetColour(apiData.getData().getAqi());
+
+                setGraphData(apiData.getData().getForecast().getDaily().getPm25());
+
             }
 
             @Override
@@ -198,7 +150,6 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
     @Override
     public boolean onQueryTextChange(String s) {
         String text = s;
-        //adapter.filter(text);
         return false;
     }
 
@@ -218,8 +169,7 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
                                 JSONObject data = response.getJSONObject("data");
                                 if (!data.get("aqi").toString().equals("-")) {
                                     ApiInformation apiData = gson.fromJson(response.toString(), ApiInformation.class);
-                                    CityRankObject currentCity = new CityRankObject(apiData.getData().getCity().getCityName(), apiData.getData().getAqi());
-                                    onCallBack.onSuccess(currentCity);
+                                    onCallBack.onSuccess(apiData);
                                 }
                             }
                         } catch (JSONException e) {
@@ -239,27 +189,69 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
     }
 
     public interface CallBack {
-        void onSuccess(CityRankObject currentCity);
+        void onSuccess(ApiInformation apiData);
         void onFail(String errorMessage);
     }
 
-    public void findCity(String s){
-        String cityURL = API_URL + s + API_TOKEN;
-        ArrayList<CityRankObject> cities = new ArrayList<>();
-        queueParseJSON(new WatchlistActivity.CallBack() {
-            @Override
-            public void onSuccess(CityRankObject currentCity) {
-                cities.add(currentCity);
-                recyclerAdapter = new RecyclerAdapter(getActivity(), cities);
-                recyclerView.setAdapter(recyclerAdapter);
+    private void setTextViewInfo(String city, String time, String aqi) {
+        currentCity.setText(city);
+        timeText.setText(time);
+        aqiText.setText(aqi);
+    }
 
-            }
+    private void configureSourceLine(String url) {
+        String sourceString = "<a href=\"" + url + "\">Link To Source</a>";
+        sourceText.setMovementMethod(LinkMovementMethod.getInstance());
+        sourceText.setClickable(true);
+        sourceText.setText(Html.fromHtml(sourceString, Html.FROM_HTML_MODE_COMPACT));
+        sourceText.setTextColor(Color.BLUE);
+    }
 
-            @Override
-            public void onFail(String errorMessage) {
-                System.out.println(errorMessage);
-            }
-        }, cityURL);
+    private void setWidgetColour(Integer aqi) {
+        GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+        if (aqi < 50) {
+            drawable.setColor(Color.rgb(0, 166, 110));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 100) {
+            drawable.setColor(Color.rgb(79, 240, 10));
+            aqiText.setTextColor(Color.BLACK);
+        } else if (aqi < 150) {
+            drawable.setColor(Color.rgb(240, 178, 10));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 200) {
+            drawable.setColor(Color.rgb(242, 76, 70));
+            aqiText.setTextColor(Color.WHITE);
+        } else if (aqi < 300) {
+            drawable.setColor(Color.rgb(219, 7, 187));
+            aqiText.setTextColor(Color.WHITE);
+        } else {
+            drawable.setColor(Color.rgb(112, 6, 66));
+            aqiText.setTextColor(Color.WHITE);
+        }
+    }
+
+    private void setGraphData(ArrayList<ParticleData> apiForcastList) {
+        ZoneId zoneId = ZoneId.systemDefault();
+        ArrayList<ParticleData> pm25List = apiForcastList;
+        List<Entry> entries = new ArrayList<Entry>();
+        xAxis.setLabelCount(pm25List.size(), true);
+        for (int i = 0; i < pm25List.size(); i++) {
+            int average = pm25List.get(i).getAverage();
+            String date = pm25List.get(i).getForecastDay();
+            LocalDate newDate = LocalDate.parse(date);
+            float floatDate = newDate.atStartOfDay(zoneId).toEpochSecond();
+            entries.add(new Entry(floatDate, average));
+        }
+        LineDataSet forcastPoints = new LineDataSet(entries, "Particle 2.5 Data");
+        forcastPoints.setDrawCircles(true);
+        forcastPoints.setCircleRadius(4);
+        forcastPoints.setDrawValues(false);
+        forcastPoints.setLineWidth(3);
+        forcastPoints.setColor(Color.GREEN);
+        forcastPoints.setCircleColor(Color.GREEN);
+        LineData lineData = new LineData(forcastPoints);
+        lineChart.setData(lineData);
+        lineChart.invalidate();
     }
 
 

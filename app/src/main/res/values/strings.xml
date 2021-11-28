@@ -9,6 +9,7 @@
     <string name="rankings_tab">Rankings</string>
     <string name="watchlist_tab">Watchlist</string>
     <string name="sourceLink"><a>Source</a></string>
+    <string name="searchSourceLink"><a>Source</a></string>
     <string name="search_hint">Search Here</string>
 
 </resources>

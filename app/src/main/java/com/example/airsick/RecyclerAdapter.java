@@ -71,6 +71,18 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         cityNameDisplay.setText(String.valueOf(currentItem.getName()));
         String aqiText = "Current AQI: " + currentItem.getAqi();
         cityAQIDisplay.setText(aqiText);
+        setCardColour(cardView, cityNameDisplay, cityAQIDisplay, currentItem);
+    }
+
+    /**
+     * Sets the colour of the card in the RecyclerView based on the region's AQI
+     * @param cardView the current holder
+     * @param cityNameDisplay textview in card
+     * @param cityAQIDisplay textview in card
+     * @param currentItem current data
+     */
+    private void setCardColour(CardView cardView, TextView cityNameDisplay,
+                               TextView cityAQIDisplay, CityRankObject currentItem) {
         if (currentItem.getAqi() < 50) {
             cardView.setCardBackgroundColor(Color.rgb(0, 166, 110));
             cityNameDisplay.setTextColor(Color.WHITE);
@@ -96,10 +108,6 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             cityNameDisplay.setTextColor(Color.WHITE);
             cityAQIDisplay.setTextColor(Color.WHITE);
         }
-
-
-
-
     }
 
     @Override

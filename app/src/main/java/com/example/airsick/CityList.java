@@ -1,5 +1,11 @@
 package com.example.airsick;
 
+/**
+ * CityList is a hardcoded list of many of the largest cities around the world
+ * it also includes some major cities across Canada. This is used because there were
+ * no free APIs available that would allow us to get a list of cities and their data
+ * while staying within their request limits.
+ */
 public class CityList {
 
     private static final String[] LIST_OF_CITIES = {
