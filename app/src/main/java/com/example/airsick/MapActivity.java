@@ -1,14 +1,25 @@
 package com.example.airsick;
 
+import static android.location.LocationManager.*;
+import static androidx.core.content.ContextCompat.getSystemService;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.location.Location;
+import android.location.LocationManager;
+import android.location.LocationListener;
+import android.location.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -41,16 +53,25 @@ public class MapActivity extends Fragment {
     private static final String API_URL = "https://api.waqi.info/feed/here/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
     private Float lat = null;
     private Float lng = null;
+    //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
+    //Location location;
+
 
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
+
+        //locationManager.requestLocationUpdates(GPS_PROVIDER, 0, 0, this);
+        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+
         @Override
         public void onMapReady(GoogleMap googleMap) {
+
             if (lat == null || lng == null) {
                 lat = 49.2827f;
                 lng = -123.1207f;
             }
+
 
             LatLng location = new LatLng(lat, lng);
             googleMap.moveCamera(CameraUpdateFactory.newLatLng(location));

@@ -1,18 +1,13 @@
 package com.example.airsick;
 
-import androidx.appcompat.app.AppCompatActivity;
+
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.graphics.Color;
 import android.os.Bundle;
-import android.text.Html;
-import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
@@ -20,15 +15,10 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
-
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
-
-import javax.security.auth.callback.Callback;
 
 public class RankingsActivity extends Fragment {
 
@@ -37,7 +27,7 @@ public class RankingsActivity extends Fragment {
     private static final String API_TOKEN = "/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
     RecyclerAdapter recyclerAdapter;
     RecyclerView recyclerView;
-
+    ArrayList<CityRankObject> mExample;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_rankings, container, false);
@@ -76,11 +66,11 @@ public class RankingsActivity extends Fragment {
                 }
             }, cityURL);
         }
+        
         return view;
     }
 
     private void queueParseJSON(final CallBack onCallBack, String url) {
-
 
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
@@ -96,6 +86,7 @@ public class RankingsActivity extends Fragment {
                                     if (!data.get("aqi").toString().equals("-")) {
                                         ApiInformation apiData = gson.fromJson(response.toString(), ApiInformation.class);
                                         CityRankObject currentCity = new CityRankObject(apiData.getData().getCity().getCityName(), apiData.getData().getAqi());
+
                                         onCallBack.onSuccess(currentCity);
                                     }
                                 }
@@ -119,5 +110,6 @@ public class RankingsActivity extends Fragment {
         void onSuccess(CityRankObject currentCity);
         void onFail(String errorMessage);
     }
+
 }
 
