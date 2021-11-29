@@ -1,51 +1,55 @@
 package com.example.airsick;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.localbroadcastmanager.content.LocalBroadcastManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.widget.LinearLayout;
+import android.text.SpannableString;
+import android.text.Spanned;
+import android.text.style.ImageSpan;
 
-import com.android.volley.Request;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.android.material.tabs.TabLayout;
 
-import org.json.JSONObject;
-
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
+    private int[] tabIcons = {
+            R.drawable.ic_baseline_home_24,
+            R.drawable.ic_baseline_my_location_24,
+            R.drawable.ic_baseline_list_24,
+            R.drawable.ic_baseline_search_24
+    };
+    private Toolbar toolbar;
+    private TabLayout tabLayout;
+    private ViewPager pager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        // Attach the SectionsPageAdapter to the ViewPager
+
         SectionsPageAdapter pagerAdapter = new SectionsPageAdapter(getSupportFragmentManager());
-        ViewPager pager = findViewById(R.id.pager);
+        pager = findViewById(R.id.pager);
         pager.setAdapter(pagerAdapter);
         // Attach the ViewPager to the TabLayout
-        TabLayout tabLayout = findViewById(R.id.tabs);
+        tabLayout = findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(pager);
-
+        setupTabIcons();
     }
 
-
-
-
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
+        tabLayout.getTabAt(3).setIcon(tabIcons[3]);
+    }
 
     public class SectionsPageAdapter extends FragmentPagerAdapter{
         public SectionsPageAdapter(FragmentManager fm) { super(fm); }
@@ -57,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
+
                     return new HomeActivity();
                 case 1:
                     return new MapActivity();
@@ -67,20 +72,5 @@ public class MainActivity extends AppCompatActivity {
             }
             return null;
         }
-        @Override
-        public CharSequence getPageTitle(int position) {
-            switch (position) {
-                case 0:
-                    return getResources().getText(R.string.home_tab);
-                case 1:
-                    return getResources().getText(R.string.map_tab);
-                case 2:
-                    return getResources().getText(R.string.rankings_tab);
-                case 3:
-                    return getResources().getText(R.string.watchlist_tab);
-            }
-            return null;
-        }
     }
-
 }

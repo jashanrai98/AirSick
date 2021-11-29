@@ -15,7 +15,9 @@
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom"/>
+            android:layout_gravity="bottom"
+            app:tabIndicatorColor="@color/teal_700"
+            app:tabSelectedTextColor="@color/teal_700"/>
     </androidx.viewpager.widget.ViewPager>
 
 </LinearLayout>
