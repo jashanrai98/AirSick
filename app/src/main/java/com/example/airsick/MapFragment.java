@@ -47,7 +47,7 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class MapActivity extends Fragment {
+public class MapFragment extends Fragment {
 
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/here/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";

@@ -37,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeActivity extends Fragment {
+public class HomeFragment extends Fragment {
 
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/here/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";

@@ -1,24 +1,15 @@
 package com.example.airsick;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.text.SpannableString;
-import android.text.Spanned;
-import android.text.style.ImageSpan;
 
 import com.google.android.material.tabs.TabLayout;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private int[] tabIcons = {
@@ -62,13 +53,13 @@ public class MainActivity extends AppCompatActivity {
             switch (position) {
                 case 0:
 
-                    return new HomeActivity();
+                    return new HomeFragment();
                 case 1:
-                    return new MapActivity();
+                    return new MapFragment();
                 case 2:
-                    return new RankingsActivity();
+                    return new RankingsFragment();
                 case 3:
-                    return new WatchlistActivity();
+                    return new SearchFragment();
             }
             return null;
         }

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.SearchView;
@@ -38,7 +37,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-public class WatchlistActivity extends Fragment implements SearchView.OnQueryTextListener{
+public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
     SearchView editsearch;
     private RequestQueue _requestQueue;
@@ -116,7 +115,7 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
     public boolean onQueryTextSubmit(String s) {
         String cityURL = API_URL + s + API_TOKEN;
 
-        queueParseJSON(new WatchlistActivity.CallBack() {
+        queueParseJSON(new SearchFragment.CallBack() {
             @Override
             public void onSuccess(ApiInformation apiData) {
                 setTextViewInfo(apiData.getData().getCity().getCityName(),
@@ -146,7 +145,7 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
         return false;
     }
 
-    private void queueParseJSON(final WatchlistActivity.CallBack onCallBack, String url) {
+    private void queueParseJSON(final SearchFragment.CallBack onCallBack, String url) {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {

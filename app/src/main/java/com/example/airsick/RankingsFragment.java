@@ -20,7 +20,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
-public class RankingsActivity extends Fragment {
+public class RankingsFragment extends Fragment {
 
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/";

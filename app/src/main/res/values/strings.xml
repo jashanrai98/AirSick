@@ -7,7 +7,7 @@
     <string name="home_tab">Home</string>
     <string name="map_tab">Map</string>
     <string name="rankings_tab">Rankings</string>
-    <string name="watchlist_tab">Watchlist</string>
+    <string name="search_tab">Search</string>
     <string name="sourceLink"><a>Source</a></string>
     <string name="searchSourceLink"><a>Source</a></string>
     <string name="search_hint">Search Here</string>
