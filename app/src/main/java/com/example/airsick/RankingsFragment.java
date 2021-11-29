@@ -20,14 +20,20 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.Collections;
 
+/**
+ * The Rankings fragment generates multiple API calls based on the hardcoded city list
+ * and simulates being able to pull a true list of cities from an API (unfortunately this
+ * feature was only available with paid API services). It then ranks these cities in a
+ * RecyclerView.
+ */
 public class RankingsFragment extends Fragment {
 
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/";
     private static final String API_TOKEN = "/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
-    RecyclerAdapter recyclerAdapter;
-    RecyclerView recyclerView;
-    ArrayList<CityRankObject> mExample;
+    private RecyclerAdapter recyclerAdapter;
+    private RecyclerView recyclerView;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_rankings, container, false);
@@ -106,8 +112,22 @@ public class RankingsFragment extends Fragment {
             _requestQueue.add(request);
     }
 
+    /**
+     * The interface Call back.
+     */
     public interface CallBack {
+        /**
+         * On success.
+         *
+         * @param currentCity the current city
+         */
         void onSuccess(CityRankObject currentCity);
+
+        /**
+         * On fail.
+         *
+         * @param errorMessage the error message
+         */
         void onFail(String errorMessage);
     }
 

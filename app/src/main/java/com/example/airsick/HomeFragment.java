@@ -37,6 +37,10 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The Home fragment gets the closest station to the users ip address
+ * and provides them with air quality information based on this location.
+ */
 public class HomeFragment extends Fragment {
 
     private RequestQueue _requestQueue;

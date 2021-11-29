@@ -47,22 +47,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+/**
+ * The Google Map fragment uses a tile overlay from the AQICN API to display
+ * air quality data all over the world.
+ */
 public class MapFragment extends Fragment {
 
-    private RequestQueue _requestQueue;
-    private static final String API_URL = "https://api.waqi.info/feed/here/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
     private Float lat = null;
     private Float lng = null;
-    //LocationManager locationManager = (LocationManager) getActivity().getSystemService(Context.LOCATION_SERVICE);
-    //Location location;
-
-
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
-
-        //locationManager.requestLocationUpdates(GPS_PROVIDER, 0, 0, this);
-        //locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
@@ -100,8 +95,6 @@ public class MapFragment extends Fragment {
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.activity_map, container, false);
-        _requestQueue = Volley.newRequestQueue(this.requireContext());
-        queueParseJSON(API_URL);
         return view;
     }
 
@@ -113,28 +106,6 @@ public class MapFragment extends Fragment {
         if (mapFragment != null) {
             mapFragment.getMapAsync(callback);
         }
-    }
-
-    private void queueParseJSON(String url) {
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, url, null,
-                new Response.Listener<JSONObject>() {
-
-                    Gson gson = new Gson();
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        ApiInformation apiData = gson.fromJson(response.toString(), ApiInformation.class);
-
-                    }
-                },new Response.ErrorListener() {
-
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                error.printStackTrace();
-            }
-        }
-        );
-        _requestQueue.add(request);
     }
 
 }

@@ -29,6 +29,8 @@ import com.github.mikephil.charting.formatter.ValueFormatter;
 import com.google.gson.Gson;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -37,9 +39,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+/**
+ * The Search fragment creates our city search page which allows users to look up any city
+ * and get it's air quality information.
+ */
 public class SearchFragment extends Fragment implements SearchView.OnQueryTextListener{
 
-    SearchView editsearch;
+
+    private SearchView editsearch;
     private RequestQueue _requestQueue;
     private static final String API_URL = "https://api.waqi.info/feed/";
     private static final String API_TOKEN = "/?token=0ec2dee04055ae8588569571ef88a352ab1a5992";
@@ -49,7 +56,14 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
     private TextView timeText;
     private LineChart lineChart;
     private TextView severityMessage;
+    private TextView timeTextDesc;
+    private TextView aqiTextDesc;
+    private TextView sourceTextDesc;
+    private TextView graphTextDesc;
     private XAxis xAxis;
+    /**
+     * The M view.
+     */
     protected View mView;
 
 
@@ -70,6 +84,13 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         severityMessage = (TextView) view.findViewById(R.id.searchRatingSeverityText);
         lineChart = (LineChart) view.findViewById(R.id.searchLineChart);
 
+        timeTextDesc = view.findViewById(R.id.searchCollectionText);
+        aqiTextDesc = view.findViewById(R.id.searchRatingTagText);
+        sourceTextDesc = view.findViewById(R.id.searchSourceText);
+        graphTextDesc = view.findViewById(R.id.searchGraphTitle);
+
+        setTextViewsVisibility();
+
         aqiText.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -84,6 +105,30 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         configureLineChart(lineChart);
 
         return view;
+    }
+
+    private void setTextViewsVisibility() {
+        if (timeTextDesc.getVisibility() == View.INVISIBLE) {
+            timeTextDesc.setVisibility(View.VISIBLE);
+            aqiTextDesc.setVisibility(View.VISIBLE);
+            sourceTextDesc.setVisibility(View.VISIBLE);
+            graphTextDesc.setVisibility(View.VISIBLE);
+            currentCity.setVisibility(View.VISIBLE);
+            timeText.setVisibility(View.VISIBLE);
+            aqiText.setVisibility(View.VISIBLE);
+            sourceText.setVisibility(View.VISIBLE);
+            lineChart.setVisibility(View.VISIBLE);
+        } else {
+            timeTextDesc.setVisibility(View.INVISIBLE);
+            aqiTextDesc.setVisibility(View.INVISIBLE);
+            sourceTextDesc.setVisibility(View.INVISIBLE);
+            graphTextDesc.setVisibility(View.INVISIBLE);
+            currentCity.setVisibility(View.INVISIBLE);
+            timeText.setVisibility(View.INVISIBLE);
+            aqiText.setVisibility(View.INVISIBLE);
+            sourceText.setVisibility(View.INVISIBLE);
+            lineChart.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void configureLineChart(LineChart lineChart) {
@@ -127,6 +172,8 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
                 setWidgetColour(apiData.getData().getAqi());
 
                 setGraphData(apiData.getData().getForecast().getDaily().getPm25());
+
+                setTextViewsVisibility();
 
             }
 
@@ -178,8 +225,23 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         _requestQueue.add(request);
     }
 
+    /**
+     * The interface Call back.
+     */
     public interface CallBack {
+
+        /**
+         * On success.
+         *
+         * @param apiData the api data
+         */
         void onSuccess(ApiInformation apiData);
+
+        /**
+         * On fail.
+         *
+         * @param errorMessage the error message
+         */
         void onFail(String errorMessage);
     }
 
