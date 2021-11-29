@@ -89,7 +89,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         sourceTextDesc = view.findViewById(R.id.searchSourceText);
         graphTextDesc = view.findViewById(R.id.searchGraphTitle);
 
-        setTextViewsVisibility();
+        setTextViewsInvisible();
 
         aqiText.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,28 +107,28 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
         return view;
     }
 
-    private void setTextViewsVisibility() {
-        if (timeTextDesc.getVisibility() == View.INVISIBLE) {
-            timeTextDesc.setVisibility(View.VISIBLE);
-            aqiTextDesc.setVisibility(View.VISIBLE);
-            sourceTextDesc.setVisibility(View.VISIBLE);
-            graphTextDesc.setVisibility(View.VISIBLE);
-            currentCity.setVisibility(View.VISIBLE);
-            timeText.setVisibility(View.VISIBLE);
-            aqiText.setVisibility(View.VISIBLE);
-            sourceText.setVisibility(View.VISIBLE);
-            lineChart.setVisibility(View.VISIBLE);
-        } else {
-            timeTextDesc.setVisibility(View.INVISIBLE);
-            aqiTextDesc.setVisibility(View.INVISIBLE);
-            sourceTextDesc.setVisibility(View.INVISIBLE);
-            graphTextDesc.setVisibility(View.INVISIBLE);
-            currentCity.setVisibility(View.INVISIBLE);
-            timeText.setVisibility(View.INVISIBLE);
-            aqiText.setVisibility(View.INVISIBLE);
-            sourceText.setVisibility(View.INVISIBLE);
-            lineChart.setVisibility(View.INVISIBLE);
-        }
+    private void setTextViewVisible() {
+        timeTextDesc.setVisibility(View.VISIBLE);
+        aqiTextDesc.setVisibility(View.VISIBLE);
+        sourceTextDesc.setVisibility(View.VISIBLE);
+        graphTextDesc.setVisibility(View.VISIBLE);
+        currentCity.setVisibility(View.VISIBLE);
+        timeText.setVisibility(View.VISIBLE);
+        aqiText.setVisibility(View.VISIBLE);
+        sourceText.setVisibility(View.VISIBLE);
+        lineChart.setVisibility(View.VISIBLE);
+    }
+
+    private void setTextViewsInvisible() {
+        timeTextDesc.setVisibility(View.INVISIBLE);
+        aqiTextDesc.setVisibility(View.INVISIBLE);
+        sourceTextDesc.setVisibility(View.INVISIBLE);
+        graphTextDesc.setVisibility(View.INVISIBLE);
+        currentCity.setVisibility(View.INVISIBLE);
+        timeText.setVisibility(View.INVISIBLE);
+        aqiText.setVisibility(View.INVISIBLE);
+        sourceText.setVisibility(View.INVISIBLE);
+        lineChart.setVisibility(View.INVISIBLE);
     }
 
     private void configureLineChart(LineChart lineChart) {
@@ -173,7 +173,7 @@ public class SearchFragment extends Fragment implements SearchView.OnQueryTextLi
 
                 setGraphData(apiData.getData().getForecast().getDaily().getPm25());
 
-                setTextViewsVisibility();
+                setTextViewVisible();
 
             }
 
