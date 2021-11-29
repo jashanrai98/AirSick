@@ -55,10 +55,40 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         CityRankObject currentItem = _cityList.get(position);
         TextView cityNameDisplay = cardView.findViewById(R.id.cardCityName);
         TextView cityAQIDisplay = cardView.findViewById(R.id.cardCityAQI);
+        TextView cardSeverity = cardView.findViewById(R.id.cardSeverity);
         cityNameDisplay.setText(String.valueOf(currentItem.getName()));
         String aqiText = "Current AQI: " + currentItem.getAqi();
         cityAQIDisplay.setText(aqiText);
         setCardColour(cardView, cityNameDisplay, cityAQIDisplay, currentItem);
+        setSeverityMessage(currentItem.getAqi(), cardSeverity);
+    }
+
+    private void setSeverityMessage(int aqi, TextView cardSeverity) {
+        String lowMessage = "Severity: Low";
+        String moderateMessage = "Severity: Moderate";
+        String sensitiveMessage = "Severity: Slightly Unhealthy";
+        String unhealthyMessage = "Severity: Unhealthy";
+        String vUnhealthyMessage = "Severity: Very Unhealthy";
+        String hazMessage = "Severity: Hazardous";
+        if (aqi < 50) {
+            cardSeverity.setText(lowMessage);
+            cardSeverity.setTextColor(Color.WHITE);
+        } else if (aqi < 100) {
+            cardSeverity.setText(moderateMessage);
+            cardSeverity.setTextColor(Color.BLACK);
+        } else if (aqi < 150) {
+            cardSeverity.setText(sensitiveMessage);
+            cardSeverity.setTextColor(Color.WHITE);
+        } else if (aqi < 200) {
+            cardSeverity.setText(unhealthyMessage);
+            cardSeverity.setTextColor(Color.WHITE);
+        } else if (aqi < 300) {
+            cardSeverity.setText(vUnhealthyMessage);
+            cardSeverity.setTextColor(Color.WHITE);
+        } else {
+            cardSeverity.setText(hazMessage);
+            cardSeverity.setTextColor(Color.WHITE);
+        }
     }
 
     /**

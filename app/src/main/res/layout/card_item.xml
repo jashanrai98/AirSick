@@ -24,15 +24,27 @@
             android:layout_height="45dp"
             android:textColor="#FFFFFF"
             android:textSize="20sp"
+            android:layout_marginLeft="10dp"
             android:paddingTop="5dp"
             android:paddingBottom="15dp" />
 
         <TextView
             android:id="@+id/cardCityAQI"
-            android:textSize="20sp"
+            android:textSize="18sp"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/cardSeverity"
+            android:textSize="18sp"
+            android:layout_width="wrap_content"
+            android:layout_height="30dp"
+            android:layout_marginTop="-30dp"
+            android:layout_marginLeft="170dp"
+            android:text="Severity: Slightly Unhealthy"
             android:textColor="#FFFFFF" />
 
 

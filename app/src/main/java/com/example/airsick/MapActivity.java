@@ -68,8 +68,8 @@ public class MapActivity extends Fragment {
         public void onMapReady(GoogleMap googleMap) {
 
             if (lat == null || lng == null) {
-                lat = 49.2827f;
-                lng = -123.1207f;
+                lat = 49.2462f;
+                lng = -123.0046f;
             }
 
 

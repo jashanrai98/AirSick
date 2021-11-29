@@ -3,6 +3,8 @@ package com.example.airsick;
 import androidx.fragment.app.Fragment;
 import android.graphics.Color;
 import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RotateDrawable;
 import android.os.Bundle;
 import android.text.Html;
 import android.text.method.LinkMovementMethod;
@@ -198,6 +200,10 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
 
     private void setWidgetColour(Integer aqi) {
         GradientDrawable drawable = (GradientDrawable) aqiText.getBackground();
+        LayerDrawable tooltipDrawable = (LayerDrawable) severityMessage.getBackground();
+        GradientDrawable bigRectangle = (GradientDrawable) tooltipDrawable.findDrawableByLayerId(R.id.ttRectangle);
+        RotateDrawable rotateTriangle = (RotateDrawable) tooltipDrawable.findDrawableByLayerId(R.id.ttTriangle);
+        GradientDrawable triangle = (GradientDrawable) rotateTriangle.getDrawable();
         String lowMessage = "Low";
         String moderateMessage = "Moderate";
         String sensitiveMessage = "Unhealthy For Sensitive Groups";
@@ -207,32 +213,38 @@ public class WatchlistActivity extends Fragment implements SearchView.OnQueryTex
         if (aqi < 50) {
             drawable.setColor(Color.rgb(0, 166, 110));
             aqiText.setTextColor(Color.WHITE);
-
+            bigRectangle.setColor(Color.rgb(0, 166, 110));
+            triangle.setColor(Color.rgb(0, 166, 110));
             severityMessage.setText(lowMessage);
         } else if (aqi < 100) {
             drawable.setColor(Color.rgb(79, 240, 10));
             aqiText.setTextColor(Color.BLACK);
-
+            bigRectangle.setColor(Color.rgb(79, 240, 10));
+            triangle.setColor(Color.rgb(79, 240, 10));
             severityMessage.setText(moderateMessage);
         } else if (aqi < 150) {
             drawable.setColor(Color.rgb(240, 178, 10));
             aqiText.setTextColor(Color.WHITE);
-
+            bigRectangle.setColor(Color.rgb(240, 178, 10));
+            triangle.setColor(Color.rgb(240, 178, 10));
             severityMessage.setText(sensitiveMessage);
         } else if (aqi < 200) {
             drawable.setColor(Color.rgb(242, 76, 70));
             aqiText.setTextColor(Color.WHITE);
-
+            bigRectangle.setColor(Color.rgb(242, 76, 70));
+            triangle.setColor(Color.rgb(242, 76, 70));
             severityMessage.setText(unhealthyMessage);
         } else if (aqi < 300) {
             drawable.setColor(Color.rgb(219, 7, 187));
             aqiText.setTextColor(Color.WHITE);
-
+            bigRectangle.setColor(Color.rgb(219, 7, 187));
+            triangle.setColor(Color.rgb(219, 7, 187));
             severityMessage.setText(vUnhealthyMessage);
         } else {
             drawable.setColor(Color.rgb(112, 6, 66));
             aqiText.setTextColor(Color.WHITE);
-
+            bigRectangle.setColor(Color.rgb(112, 6, 66));
+            triangle.setColor(Color.rgb(112, 6, 66));
             severityMessage.setText(hazMessage);
         }
     }

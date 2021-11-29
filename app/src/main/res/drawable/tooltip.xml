@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:top="5dp" android:left="0dp" android:height="55dp" android:width="120dp">
+    <item android:id="@+id/ttRectangle" android:top="5dp" android:left="0dp" android:height="45dp" android:width="120dp">
 
         <shape android:shape="rectangle">
             <solid android:color="@color/grey">
@@ -8,7 +8,7 @@
             <corners android:radius="4dp"></corners>
         </shape>
     </item>
-    <item android:left="50dp" android:height="15dp" android:width="15dp">
+    <item android:id="@+id/ttTriangle" android:left="50dp" android:height="15dp" android:width="15dp">
 
         <rotate
             android:fromDegrees="45"
